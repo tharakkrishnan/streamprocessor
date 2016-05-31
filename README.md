@@ -2,7 +2,7 @@
 
 ## Installation and usage
 
-This program requires the "enum" module that is part of python 3.4 and requires a version of python that is 3.4 or greater. If the "enum" module is not installed,
+WARNING: This program requires the "enum" module that is part of python 3.4 and requires a version of python that is 3.4 or greater. If the "enum" module is not installed,
 please install it by invoking:
         $ pip install enum
 Alternatively, it can also be installed by invoking
@@ -10,9 +10,11 @@ Alternatively, it can also be installed by invoking
         $ pip install -r requirements.txt
 
 To invoke the worker script:
+        $ cd xAd/src
         $ python3 worker.py
 This will invoke the script with timeout set to 60 seconds
-        $ python worker.py -t 10
+        $ cd xAd/src
+        $ python3 worker.py -t 10
 This will invoke the script with timeout set to 10 seconds.
 
 ## Expected Output
