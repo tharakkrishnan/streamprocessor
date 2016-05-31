@@ -8,6 +8,8 @@ from operator import itemgetter
 
 from streamer import Streamer, Status
 
+TIMEOUT_PERIOD = 60
+NUM_WORKERS = 10
 
 class Worker(multiprocessing.Process):
 
@@ -66,7 +68,6 @@ if __name__ == '__main__':
     total_elapsed_successful = 0
     total_count_successful = 0
 
-    TIMEOUT_PERIOD = 60
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', action='store', dest='timeout', default=60, 
@@ -76,8 +77,8 @@ if __name__ == '__main__':
 
     start = time.time()
     
-    for i in range(10):
-        p = Worker(i, results, logger)
+    for i in range(NUM_WORKERS):
+        p = Worker(i+1, results, mlogger)
         procs.append(p)
         p.start()
 
@@ -104,7 +105,7 @@ if __name__ == '__main__':
             status = Status(result[3]).name
             pretty_log.append((elapsed, byte_count, status, "Worker[{}]: [Elapsed]: {:.2f}ms [byte_count]: {} [status]: {}".format(result[0],  elapsed, byte_count, status)))
      
-     # All of the logic with the pretty_log is simply to print the log in descending order of [elapsed]    
+     # All of the logic with the pretty_log is simply to print the log in descending order of [elapsed]
     for p in timed_out_procs:
         pretty_log.append((0,0, Status.TIMEOUT.name, "Worker[{}]: [Elapsed]: {:.2f}ms [byte_count]: {} [status]:{}".format(p._get_id(), 0, 0, Status.TIMEOUT.name)))
     
@@ -121,4 +122,4 @@ if __name__ == '__main__':
         logger.debug("AVERAGE: Successful: {} [Elapsed]: {:.2f} [byte_count]: {:.2f}".format(total_count_successful, total_elapsed_successful/total_count_successful, total_byte_cnt_successful/total_count_successful))  
 
     for p in procs:
-       p.join()        
+       p.join()
